@@ -5,15 +5,20 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/app/[username]/Components/Navbar";
 
-const earnings = () => {
-  const { data: session } = useSession();
+const Earnings = () => {
+  const { data: session, status } = useSession();
   const router = useRouter();
+
   useEffect(() => {
-    if (!session) {
+    if (status === "unauthenticated") {
       router.push("/login");
-      return;
     }
-  }, [router, session]);
+  }, [status, router]);
+
+  if (!session) {
+    return null;
+  }
+
   return (
     <div>
       <Navbar />
@@ -21,4 +26,4 @@ const earnings = () => {
   );
 };
 
-export default earnings;
+export default Earnings;

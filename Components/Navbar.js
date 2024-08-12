@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import DropDown from "./DropDown";
+import Image from "next/image";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -14,7 +15,13 @@ const Navbar = () => {
           href="/"
           className="flex justify-center items-center gap-4 cursor-pointer"
         >
-          <img className="h-12" src="/Cookie.png" alt="Logo" />
+          <Image
+            className="h-12"
+            src="/Cookie.png"
+            alt="Logo"
+            width={48}
+            height={48}
+          />
           <h1 className="text-2xl hidden md:block">Buy Me A Cookie</h1>
         </Link>
       </div>

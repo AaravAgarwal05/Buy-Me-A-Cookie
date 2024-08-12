@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
-import Link from "next/link"; 
+import Link from "next/link";
+import Image from "next/image";
 
 const Navbar = () => {
   return (
@@ -10,11 +11,17 @@ const Navbar = () => {
           href="/"
           className="flex justify-center items-center gap-4 cursor-pointer"
         >
-          <img className="h-12" src="/Cookie.png" alt="Logo" />
+          <Image
+            className="h-12"
+            src="/Cookie.png"
+            alt="Logo"
+            width={48}
+            height={48}
+          />
         </Link>
       </div>
       <div className="flex gap-2 text-l">
-        <span>Don't have an account?</span>
+        <span>Don&apos;t have an account?</span>
         <Link href={"/signup"}>
           <span className="underline">Sign up</span>
         </Link>

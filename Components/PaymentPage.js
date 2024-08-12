@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Bounce } from "react-toastify";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const PaymentPage = ({ username }) => {
   const { data: session } = useSession();
@@ -26,10 +27,6 @@ const PaymentPage = ({ username }) => {
   const [coverImage, setCoverImage] = React.useState("");
   const [profileImage, setProfileImage] = React.useState("");
   const SearchParams = useSearchParams();
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const handleChange = (e) => {
     setPaymentForm({ ...paymentForm, [e.target.name]: e.target.value });
@@ -46,6 +43,10 @@ const PaymentPage = ({ username }) => {
     let p = await fetchPayments(username);
     setPayments(p);
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   useEffect(() => {
     if (SearchParams.get("payment") === "true") {
@@ -185,14 +186,16 @@ const PaymentPage = ({ username }) => {
       <Script src="https://checkout.razorpay.com/v1/checkout.js"></Script>
       <Navbar />
       <div className="w-full relative">
-        <img
+        <Image
           className="object-cover w-full h-48 md:h-72 lg:h-96"
           src={currentUser.coverPic || coverImage || "/Cover Image.jpeg"}
           alt="Cover Image"
+          width={1920}
+          height={1080}
         />
         {session && (
           <div className="absolute w-full text-3xl inset-0 flex gap-2 items-center justify-center text-white font-bold bg-black bg-opacity-60 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
-            <img width={40} src="/Edit.gif" alt="" />
+            <Image width={40} height={40} src="/Edit.gif" alt="" />
             Upload
             <input
               type="file"
@@ -204,7 +207,7 @@ const PaymentPage = ({ username }) => {
 
         <div className="absolute -bottom-20 right-[32%] md:right-[40%] lg:right-[42%] xl:right-[46%] border-white border-2 rounded-full">
           <div className="relative group">
-            <img
+            <Image
               className="rounded-full aspect-square"
               height={150}
               width={150}
@@ -213,7 +216,7 @@ const PaymentPage = ({ username }) => {
             />
             {session && (
               <div className="absolute inset-0 flex gap-1 items-center justify-center text-white text-sm font-bold rounded-full bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
-                <img width={20} src="/Edit.gif" alt="" />
+                <Image width={20} height={20} src="/Edit.gif" alt="" />
                 Upload
                 <input
                   type="file"
@@ -239,18 +242,20 @@ const PaymentPage = ({ username }) => {
             <h2 className="text-2xl font-bold md:my-5">Supporters</h2>
             <ul className="lg:mx-5 text-lg ">
               {payments.length === 0 && (
-                <li className="my-2 font-bold text-sm lg:text-lg">No supporters yet 😥</li>
+                <li className="my-2 font-bold text-sm lg:text-lg">
+                  No supporters yet 😥
+                </li>
               )}
               {payments.slice(0, 4).map((p, i) => (
                 <li
                   key={i}
                   className="my-2 flex gap-2 justify-start items-center text-sm lg:text-lg"
                 >
-                  <img width={40} src="/Avatar.gif" alt="" />
+                  <Image width={40} height={40} src="/Avatar.gif" alt="" />
                   <span>
                     {p.name} donated{" "}
                     <span className="font-bold">₹{p.amount}</span> with a
-                    message "{p.message}"
+                    message &quot;{p.message}&quot;
                   </span>
                 </li>
               ))}

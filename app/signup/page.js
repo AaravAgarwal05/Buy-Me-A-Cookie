@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
+import React from "react";
 
 const signup = () => {
   return (
@@ -9,7 +11,7 @@ const signup = () => {
           <div className="flex justify-between flex-col relative h-full">
             <div className="pl-12 pt-12">
               <Link href="/" title="Buy Me a Coffee">
-                <img height={38} width={38} src="/Cookie.png" alt="" />
+                <Image height={38} width={38} src="/Cookie.png" alt="" />
               </Link>
               <h3 className="mt-7">Welcome to Buy Me a Cookie</h3>
             </div>
@@ -20,9 +22,12 @@ const signup = () => {
                   className="-ml-4 first:ml-0 block border-4 border-purple-700 w-12 h-12 rounded-full relative group overflow-hidden transform hover:scale-110 duration-300"
                 >
                   <div className="bg-dark/50 w-full h-full absolute left-0 top-0 opacity-0 transition group-hover:opacity-100"></div>
-                  <img
+                  <Image
                     src="/Avatar 1.avif"
                     className="w-10 h-10 rounded-full object-cover"
+                    alt=""
+                    height={40}
+                    width={40}
                   />
                 </a>
                 <a
@@ -30,9 +35,12 @@ const signup = () => {
                   className="-ml-4 first:ml-0 block border-4 border-purple-700 w-12 h-12 rounded-full relative group overflow-hidden transform hover:scale-110 duration-300"
                 >
                   <div className="bg-dark/50 w-full h-full absolute left-0 top-0 opacity-0 transition group-hover:opacity-100"></div>
-                  <img
+                  <Image
                     src="/Avatar 1.avif"
                     className="w-10 h-10 rounded-full object-cover"
+                    alt=""
+                    height={40}
+                    width={40}
                   />
                 </a>
                 <a
@@ -40,9 +48,12 @@ const signup = () => {
                   className="-ml-4 first:ml-0 block border-4 border-purple-700 w-12 h-12 rounded-full relative group overflow-hidden transform hover:scale-110 duration-300"
                 >
                   <div className="bg-dark/50 w-full h-full absolute left-0 top-0 opacity-0 transition group-hover:opacity-100"></div>
-                  <img
+                  <Image
                     src="/Avatar 1.avif"
                     className="w-10 h-10 rounded-full object-cover"
+                    alt=""
+                    height={40}
+                    width={40}
                   />
                 </a>
                 <a
@@ -50,20 +61,23 @@ const signup = () => {
                   className="-ml-4 first:ml-0 block border-4 border-purple-700 w-12 h-12 rounded-full relative group overflow-hidden transform hover:scale-110 duration-300"
                 >
                   <div className="bg-dark/50 w-full h-full absolute left-0 top-0 opacity-0 transition group-hover:opacity-100"></div>
-                  <img
+                  <Image
                     src="/Avatar 1.avif"
                     className="w-10 h-10 rounded-full object-cover"
+                    alt=""
+                    height={40}
+                    width={40}
                   />
                 </a>
               </div>
               <div className="ml-4 font-cr-book text-md flex items-center">
                 <div>
                   <div className="flex gap-1">
-                    <img height={13} width={14} src="/Star.svg" alt="" />
-                    <img height={13} width={14} src="/Star.svg" alt="" />
-                    <img height={13} width={14} src="/Star.svg" alt="" />
-                    <img height={13} width={14} src="/Star.svg" alt="" />
-                    <img height={13} width={14} src="/Star.svg" alt="" />
+                    <Image height={13} width={14} src="/Star.svg" alt="" />
+                    <Image height={13} width={14} src="/Star.svg" alt="" />
+                    <Image height={13} width={14} src="/Star.svg" alt="" />
+                    <Image height={13} width={14} src="/Star.svg" alt="" />
+                    <Image height={13} width={14} src="/Star.svg" alt="" />
                   </div>
                   <div className="mt-2">Loved by 1,000,000+ creators</div>
                 </div>
@@ -75,7 +89,7 @@ const signup = () => {
           <div className="w-full flex items-center justify-between lg:justify-end px-4 pt-6 md:pr-12 md:pt-11">
             <div>
               <Link href="/" title="Buy Me a Coffee">
-                <img height={38} width={38} src="/Cookie.png" alt="" />
+                <Image height={38} width={38} src="/Cookie.png" alt="" />
               </Link>
             </div>
             <div className="flex ">
@@ -90,7 +104,9 @@ const signup = () => {
           </div>
           <div className="flex items-center justify-center md:flex-1 mt-12 md:mt-0">
             <div className="w-11/12 md:w-2/3 xl:w-2/5 relative">
-              <h1 className="text-2xl md:text-3xl font-semibold">Create your account</h1>
+              <h1 className="text-2xl md:text-3xl font-semibold">
+                Create your account
+              </h1>
               <h4 className="text-gray-700 mt-0.5">
                 Choose a username for your page.
               </h4>
@@ -99,7 +115,7 @@ const signup = () => {
                   buymeacookie.com/
                 </h3>
                 <input
-                  className="w-full border-2 border-transparent transition hover:ease-out duration-75 outline-2 outline-dark15 h-12 rounded-xl text-md px-4 py-3 text-dark font-medium focus:bg-white placeholder:text-gray-700 placeholder:font-cr-book tracking-normal focus:outline-none focus:ring-0 focus:ring-offset-0 bg-gray-100 hover:bg-greyE7 focus:border-dark15 pl-[169px] pr-10 xs:pr-8 signup-username-2"
+                  className="w-full border-2 border-transparent transition hover:ease-out duration-75 outline-2 outline-dark15 h-12 rounded-xl text-md px-4 py-3 font-medium focus:bg-white placeholder:text-gray-700 tracking-normal focus:outline-none focus:ring-0 focus:ring-offset-0 bg-gray-100 pl-[177px] pr-10"
                   type="text"
                   id="username"
                   placeholder="yourname"

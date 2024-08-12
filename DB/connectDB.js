@@ -1,18 +1,23 @@
 import mongoose from "mongoose";
 
+const uri =
+  "mongodb+srv://AaravAgarwal5:Aditi220305@cookie.yz94k.mongodb.net/Cookie?retryWrites=true&w=majority&appName=Cookie";
+
 const connectDB = async () => {
   if (mongoose.connection.readyState >= 1) {
-    return;
+    return mongoose.connection;
   }
 
   try {
-    const conn = await mongoose.connect(`mongodb://localhost:27017/Cookie`, {
+    await mongoose.connect(uri, {
       useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000,
     });
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.error(`Error connecting to MongoDB: ${error.message}`);
-    process.exit(1);
+    console.log("Connected to MongoDB!");
+  } catch (err) {
+    console.error("Failed to connect to MongoDB", err);
+    throw err;
   }
 };
 

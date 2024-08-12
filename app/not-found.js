@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const Custom404 = () => {
   return (
@@ -9,7 +10,7 @@ const Custom404 = () => {
           <div className="relative">
             <div className="flex flex-col items-center">
               <h1 className="my-2 text-white font-bold text-2xl">
-                Looks like you've found the doorway to the great nothing
+                Looks like you&apos;ve found the doorway to the great nothing
               </h1>
               <p className="my-2 text-white">
                 Sorry about that! Please visit our homepage to get where you
@@ -21,15 +22,22 @@ const Custom404 = () => {
                 </button>
               </Link>
               <div>
-                <img src="https://i.ibb.co/G9DC8S0/404-2.png" alt="404 Error" />
+                <Image
+                  src="https://i.ibb.co/G9DC8S0/404-2.png"
+                  alt="404 Error"
+                  width={300}
+                  height={300}
+                />
               </div>
             </div>
           </div>
         </div>
         <div>
-          <img
+          <Image
             src="https://i.ibb.co/ck1SGFJ/Group.png"
             alt="Group Illustration"
+            width={300}
+            height={300}
           />
         </div>
       </div>

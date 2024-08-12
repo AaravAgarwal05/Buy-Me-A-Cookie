@@ -1,5 +1,7 @@
+import React from "react";
 import Navbar from "@/Components/Navbar";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -9,11 +11,11 @@ export default function Home() {
         <div className="container mx-auto flex flex-wrap mb-24 lg:w-11/12">
           <div className="text-lg w-full xl:w-1/2 flex items-center flex-col text-center mx-auto">
             <div className="flex mb-4 md:mb-12 gap-1 items-center justify-center">
-              <img height={24} src="/Star.svg" alt="" />
-              <img height={24} src="/Star.svg" alt="" />
-              <img height={24} src="/Star.svg" alt="" />
-              <img height={24} src="/Star.svg" alt="" />
-              <img height={24} src="/Star.svg" alt="" />
+              <Image height={24} width={24} src="/Star.svg" alt="" />
+              <Image height={24} width={24} src="/Star.svg" alt="" />
+              <Image height={24} width={24} src="/Star.svg" alt="" />
+              <Image height={24} width={24} src="/Star.svg" alt="" />
+              <Image height={24} width={24} src="/Star.svg" alt="" />
               <div className="text-sm md:text-lg md:ml-1">
                 Loved by 10,00,000+ creators
               </div>
