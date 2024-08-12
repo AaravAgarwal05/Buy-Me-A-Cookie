@@ -39,7 +39,7 @@ export const POST = async (req) => {
       );
       console.log("Payment verified and updated:", updatedPayment);
       return NextResponse.redirect(
-        `http://localhost:3000/${updatedPayment.userId}?payment=true`
+        `${process.env.NEXT_PUBLIC_URL}/${updatedPayment.userId}?payment=true`
       );
     } else {
       console.log(
