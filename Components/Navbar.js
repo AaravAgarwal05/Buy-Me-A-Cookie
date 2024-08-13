@@ -38,7 +38,7 @@ const Navbar = () => {
                 className="text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 rounded-full px-4 py-2 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 hover:scale-105"
               >
                 <div className="hidden md:block">Sign up</div>
-                <div className="md:hidden">Start my page</div>
+                <div className="block md:hidden">Start my page</div>
               </button>
             </Link>
           </li>
