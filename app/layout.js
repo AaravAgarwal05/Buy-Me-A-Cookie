@@ -3,6 +3,7 @@ import "./globals.css";
 import Footer from "@/Components/Footer";
 import SessionWrapper from "@/Components/SessionWrapper";
 import Head from "next/head";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link
           rel="apple-touch-icon"
@@ -55,6 +57,7 @@ export default function RootLayout({ children }) {
           <div className="flex-1">{children}</div>
           <Footer />
         </SessionWrapper>
+        <SpeedInsights />
       </body>
     </html>
   );
