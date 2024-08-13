@@ -121,6 +121,8 @@ export default {
     "md:w-1/2",
     "xl:flex",
     "bg-blue-500",
+    "md:mx-5",
+    "md:my-5",
   ],
   theme: {
     extend: {
