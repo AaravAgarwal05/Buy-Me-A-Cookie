@@ -26,9 +26,6 @@ export const Authoptions = NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  session: {
-    maxAge: null,
-  },
   callbacks: {
     async signIn({ user, account, profile, email }) {
       try {
