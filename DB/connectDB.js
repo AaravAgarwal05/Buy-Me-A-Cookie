@@ -1,16 +1,12 @@
 import mongoose from "mongoose";
 
-const uri = process.env.MONGODB_URL;
-
 const connectDB = async () => {
   if (mongoose.connection.readyState >= 1) {
     return mongoose.connection;
   }
 
   try {
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+    await mongoose.connect(process.env.MONGODB_URL, {
       serverSelectionTimeoutMS: 5000,
     });
     console.log("Connected to MongoDB!");
