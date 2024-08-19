@@ -16,12 +16,14 @@ const Dashboard = () => {
 
   const router = useRouter();
 
-  useEffect(async () => {
-    await getData();
-    if (!session) {
-      router.push("/login");
-      return;
-    }
+  useEffect(() => {
+    setTimeout(() => {
+      if (!session) {
+        router.push("/login");
+        return;
+      }
+    }, 1500);
+    getData();
   }, [router, session]);
 
   const getData = async () => {
