@@ -47,7 +47,7 @@ const PaymentPage = ({ username }) => {
     } catch (error) {
       console.error("Error fetching user data:", error);
     } finally {
-      setTimeout(() => setLoading(false), 2000);
+      setLoading(false);
     }
   };
 
