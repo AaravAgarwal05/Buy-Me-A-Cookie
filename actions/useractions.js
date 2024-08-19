@@ -93,7 +93,7 @@ export const updateUser = async (userId, data) => {
 
     return { success: true };
   } catch (error) {
-    throw new Error("Error updating user:" + error);
+    throw new Error("Error updating user:" + error.message);
   }
 };
 
