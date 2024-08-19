@@ -19,7 +19,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (!session) {
       router.push("/login");
-      return null;
+      return;
     }
     getData();
   }, [router, session]);
