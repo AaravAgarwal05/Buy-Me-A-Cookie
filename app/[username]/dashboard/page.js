@@ -31,7 +31,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error fetching user data:", error);
     } finally {
-      setLoading(false);
+      setTimeout(() => setLoading(false), 2000);
     }
   };
 
@@ -72,7 +72,7 @@ const Dashboard = () => {
         transition: Bounce,
       });
     }
-    setLoading(false);
+    setTimeout(() => setLoading(false), 2000);
     setTimeout(reloadPage, 2000);
   };
 
