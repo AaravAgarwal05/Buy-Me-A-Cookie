@@ -26,6 +26,22 @@ export const Authoptions = NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+    maxAge: 0,
+  },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax", 
+        path: "/",
+        maxAge: 0, 
+      },
+    },
+  },
   callbacks: {
     async signIn({ user, account, profile, email }) {
       try {
