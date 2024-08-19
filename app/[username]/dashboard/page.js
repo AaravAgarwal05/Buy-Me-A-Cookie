@@ -16,8 +16,8 @@ const Dashboard = () => {
 
   const router = useRouter();
 
-  useEffect(() => {
-    getData();
+  useEffect(async () => {
+    await getData();
     if (!session) {
       router.push("/login");
       return;
