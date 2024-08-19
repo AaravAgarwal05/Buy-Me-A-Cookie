@@ -84,7 +84,7 @@ export const updateUser = async (userId, data) => {
     if (userId !== newData.username) {
       let existingUser = await User.findOne({ username: newData.username });
       if (existingUser) {
-        return { error: "Username already exists" };
+        throw new Error("Username already exists");
       }
     }
 
@@ -93,8 +93,7 @@ export const updateUser = async (userId, data) => {
 
     return { success: true };
   } catch (error) {
-    console.error("Error updating user:", error);
-    return { error: "User update failed due to an error" };
+    throw new Error("Error updating user:" + error);
   }
 };
 
