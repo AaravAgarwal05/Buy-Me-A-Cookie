@@ -9,8 +9,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Bounce } from "react-toastify";
 
-const Dashboard = async () => {
-  const { data: session } = await useSession();
+const Dashboard = () => {
+  const { data: session } = useSession();
   const [loading, setLoading] = React.useState(true);
   const [form, setForm] = React.useState({});
 
