@@ -91,9 +91,8 @@ export const updateUser = async (userId, data) => {
     await User.updateOne({ username: userId }, { $set: newData });
     await Payment.updateMany({ userId: userId }, { userId: newData.username });
 
-    return { success: true };
   } catch (error) {
-    throw new Error("Error updating user:" + error.message);
+    throw new Error(error);
   }
 };
 

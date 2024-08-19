@@ -55,7 +55,7 @@ const Dashboard = () => {
         transition: Bounce,
       });
     } catch (error) {
-      toast.error(error.message, {
+      toast.error(error, {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
