@@ -134,6 +134,24 @@ export default {
       colors: {
         "custom-background": "#212131",
       },
+      spacing: {
+        "uib-size": "var(--uib-size, 150px)",
+      },
+      transitionTimingFunction: {
+        "uib-transition": "ease 0.5s",
+      },
+      opacity: {
+        "uib-bg-opacity": "var(--uib-bg-opacity, 0.1)",
+      },
+      animation: {
+        travel: "travel var(--uib-speed, 1.4s) linear infinite",
+      },
+      keyframes: {
+        travel: {
+          "0%": { "stroke-dashoffset": "0" },
+          "100%": { "stroke-dashoffset": "-100" },
+        },
+      },
     },
   },
   plugins: [],

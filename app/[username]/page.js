@@ -11,7 +11,6 @@ const Homepage = async ({ params }) => {
   if (!user) {
     notFound();
   }
-
   return <PaymentPage username={params.username} />;
 };
 
