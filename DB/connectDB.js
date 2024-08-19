@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
-const uri =
-  "mongodb+srv://AaravAgarwal5:Aditi220305@cookie.yz94k.mongodb.net/Cookie?retryWrites=true&w=majority&appName=Cookie";
+const uri = process.env.MONGODB_URL;
 
 const connectDB = async () => {
   if (mongoose.connection.readyState >= 1) {
