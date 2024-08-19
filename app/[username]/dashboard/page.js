@@ -9,19 +9,19 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Bounce } from "react-toastify";
 
-const Dashboard = () => {
-  const { data: session } = useSession();
+const Dashboard = async () => {
+  const { data: session } = await useSession();
   const [loading, setLoading] = React.useState(true);
   const [form, setForm] = React.useState({});
 
   const router = useRouter();
 
   useEffect(() => {
+    getData();
     if (!session) {
       router.push("/login");
       return;
     }
-    getData();
   }, [router, session]);
 
   const getData = async () => {
