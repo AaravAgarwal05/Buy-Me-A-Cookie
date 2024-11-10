@@ -1,101 +1,46 @@
+import React from "react";
+import Navbar from "@/components/Navbar";
+import Link from "next/link";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <>
+      <Navbar />
+      <div className="w-full mx-auto px-8 lg:px-32 relative xs:px-0 pt-11 md:pt-28">
+        <div className="container mx-auto flex flex-wrap mb-24 lg:w-11/12">
+          <div className="text-lg w-full xl:w-1/2 flex items-center flex-col text-center mx-auto">
+            <div className="flex mb-4 md:mb-12 gap-1 items-center justify-center">
+              <Image height={24} width={24} src="/Star.svg" alt="" />
+              <Image height={24} width={24} src="/Star.svg" alt="" />
+              <Image height={24} width={24} src="/Star.svg" alt="" />
+              <Image height={24} width={24} src="/Star.svg" alt="" />
+              <Image height={24} width={24} src="/Star.svg" alt="" />
+              <div className="text-sm md:text-lg md:ml-1">
+                Loved by 10,00,000+ creators
+              </div>
+            </div>
+            <div className="w-full relative leading-none overflow-visible text-5xl md:text-8xl font-semibold flex flex-col justify-center items-center">
+              Fund your creative work
+            </div>
+            <div className="mb-4 text-lg md:text-2xl tagline text-center font-cr-regular leading-34 mt-2 w-full md:w-5/6 md:mx-auto xs:w-full xxs:text-18">
+              Accept support. Start a membership. Setup a shop. It’s easier than
+              you think.
+            </div>
+            <Link href="/signup">
+              <button
+                type="button"
+                className="flex items-center justify-center mt-2 md:mt-8 text-lg md:text-2xl font-semibold text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 rounded-full px-10 md:px-12 py-2.5 md:py-5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 hover:scale-105"
+              >
+                Start my page
+              </button>
+            </Link>
+            <div className="text-lg desc font-cr-regular leading-30 mt-4 w-600 mx-auto xs:w-full xs:text-center xs:mt-8 xs:leading-30 xs:text-16">
+              It’s free and takes less than a minute!
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </>
   );
 }
