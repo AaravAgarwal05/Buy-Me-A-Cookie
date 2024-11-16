@@ -1,9 +1,9 @@
 "use server";
 
 import Razorpay from "razorpay";
-import Payment from "@/src/models/payment";
-import connectDB from "@/src/db/connectDB";
-import User from "@/src/models/user";
+import Payment from "../models/payment";
+import connectDB from "../db/connectDB";
+import User from "../models/user";
 
 export const initiate = async (amount, userId, paymentForm) => {
   try {

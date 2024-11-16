@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 
 const DropDown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -67,7 +66,7 @@ const DropDown = () => {
               <li>
                 <button
                   onClick={() => signOut()}
-                  className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Sign out
                 </button>

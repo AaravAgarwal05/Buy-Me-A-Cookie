@@ -20,12 +20,12 @@ const Login = () => {
         <div className="flex flex-col">
           <div className="w-screen min-h-[745px] md:min-h-[895px] lg:min-h-[945px] xl:min-h-[750px] flex justify-center items-center p-2 xl:p-0 md:p-20 ">
             <div className="w-[380px]">
-              <div className="text-3xl font-bold text-center mb-8 xs:text-2xl xs:mb-6">
+              <div className="mb-8 text-3xl font-bold text-center xs:text-2xl xs:mb-6">
                 Welcome back
               </div>
               <div>
                 <input
-                  className="text-black w-full border-2 border-transparent transition ease-out duration-75 outline-2 outline-gray-900 h-12 rounded-xl text-md px-4 py-3 font-medium focus:bg-white placeholder:text-gray-500 tracking-normal focus:outline-none focus:ring-0 focus:ring-offset-0 bg-gray-100 hover:bg-gray-200 focus:border-white"
+                  className="w-full h-12 px-4 py-3 font-medium tracking-normal text-black transition duration-75 ease-out bg-gray-100 border-2 border-transparent outline-2 outline-gray-900 rounded-xl text-md focus:bg-white placeholder:text-gray-500 focus:outline-none focus:ring-0 focus:ring-offset-0 hover:bg-gray-200 focus:border-white"
                   type="text"
                   placeholder="Email"
                   autoComplete="email"
@@ -35,30 +35,30 @@ const Login = () => {
 
               <button
                 type="submit"
-                className="relative flex justify-center items-center focus:outline-none cursor-pointer font-medium w-full h-12 px-5 text-base rounded-full mt-8"
+                className="relative flex items-center justify-center w-full h-12 px-5 mt-8 text-base font-medium rounded-full cursor-pointer focus:outline-none"
                 style={{ backgroundColor: "#0070f3", color: "#fff" }}
               >
-                <span className="relative z-10 inline-flex w-full items-center justify-center opacity-100">
+                <span className="relative z-10 inline-flex items-center justify-center w-full opacity-100">
                   Continue with email
                 </span>
-                <span className="block absolute opacity-0">
-                  <span className="w-2 h-2 rounded-full block dot-flashing-dark bg-dark"></span>
+                <span className="absolute block opacity-0">
+                  <span className="block w-2 h-2 rounded-full dot-flashing-dark bg-dark"></span>
                 </span>
               </button>
-              <div className="py-8 text-sm flex items-center justify-center relative text-dark my-1">
-                <span className="block w-full bg-white h-px"></span>
-                <span className="bg-black text-white py-2 px-4 absolute">
+              <div className="relative flex items-center justify-center py-8 my-1 text-sm text-dark">
+                <span className="block w-full h-px bg-white"></span>
+                <span className="absolute px-4 py-2 text-white bg-black">
                   or login with
                 </span>
               </div>
               <div className="w-full text-black">
                 <button
                   type="submit"
-                  className="relative bg-white border border-greyE5 rounded-lg text-dark flex justify-center items-center focus:outline-none transition-colors hover:bg-dark/5 cursor-pointer w-full h-12 text-sm mb-3"
+                  className="relative flex items-center justify-center w-full h-12 mb-3 text-sm transition-colors bg-white border rounded-lg cursor-pointer border-greyE5 text-dark focus:outline-none hover:bg-dark/5"
                   id="google-login-page"
                   onClick={() => signIn("google")}
                 >
-                  <span className="relative z-10 inline-flex w-full items-center justify-center">
+                  <span className="relative z-10 inline-flex items-center justify-center w-full">
                     <div className="w-[210px] flex">
                       <svg
                         width="22"
@@ -91,9 +91,9 @@ const Login = () => {
                 </button>
                 <button
                   type="submit"
-                  className="relative bg-white border border-greyE5 rounded-lg text-dark flex justify-center items-center focus:outline-none transition-colors hover:bg-dark/5 cursor-pointer w-full h-12 text-sm mb-3"
+                  className="relative flex items-center justify-center w-full h-12 mb-3 text-sm transition-colors bg-white border rounded-lg cursor-pointer border-greyE5 text-dark focus:outline-none hover:bg-dark/5"
                 >
-                  <span className="relative z-10 inline-flex w-full items-center justify-center">
+                  <span className="relative z-10 inline-flex items-center justify-center w-full">
                     <div className="w-[210px] flex">
                       <svg
                         width="25"
@@ -118,9 +118,9 @@ const Login = () => {
                 </button>
                 <button
                   type="submit"
-                  className="relative bg-white border border-greyE5 rounded-lg text-dark flex justify-center items-center focus:outline-none transition-colors hover:bg-dark/5 cursor-pointer w-full h-12 text-sm mb-3"
+                  className="relative flex items-center justify-center w-full h-12 mb-3 text-sm transition-colors bg-white border rounded-lg cursor-pointer border-greyE5 text-dark focus:outline-none hover:bg-dark/5"
                 >
-                  <span className="relative z-10 inline-flex w-full items-center justify-center">
+                  <span className="relative z-10 inline-flex items-center justify-center w-full">
                     <div className="w-[210px] flex">
                       <svg
                         width="20"
@@ -145,10 +145,10 @@ const Login = () => {
                 </button>
                 <button
                   type="submit"
-                  className="relative bg-white border border-greyE5 rounded-lg text-dark flex justify-center items-center focus:outline-none transition-colors hover:bg-dark/5 cursor-pointer w-full h-12 text-sm"
+                  className="relative flex items-center justify-center w-full h-12 text-sm transition-colors bg-white border rounded-lg cursor-pointer border-greyE5 text-dark focus:outline-none hover:bg-dark/5"
                   onClick={() => signIn("github")}
                 >
-                  <span className="relative z-10 inline-flex w-full items-center justify-center">
+                  <span className="relative z-10 inline-flex items-center justify-center w-full">
                     <div className="w-[210px] flex items-center">
                       <svg
                         width="16px"

@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Navbar from "@/src/app/[username]/components/navbar";
+import Navbar from "../components/navbar";
 
 const Earnings = () => {
   const { data: session, status } = useSession();

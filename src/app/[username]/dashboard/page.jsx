@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
-import Navbar from "@/src/app/[username]/components/navbar";
-import Loader from "@/src/components/Loader";
+import Navbar from "../components/navbar";
+import Loader from "@/src/components/loader";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { fetchUser, updateUser } from "@/src/server/serverActions";

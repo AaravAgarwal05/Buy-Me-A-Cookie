@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import Script from "next/script";
-import Navbar from "@/src/app/[username]/components/navbar";
+import Navbar from "../app/[username]/components/navbar";
 import {
   fetchPayments,
   fetchUser,
@@ -17,7 +17,7 @@ import { Bounce } from "react-toastify";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Loader from "@/src/components/Loader";
+import Loader from "./loader";
 
 const PaymentPage = ({ username }) => {
   const { data: session } = useSession();
