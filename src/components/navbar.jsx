@@ -2,7 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import DropDown from "./DropDown";
+import DropDown from "./dropdown";
 import Image from "next/image";
 
 const Navbar = () => {

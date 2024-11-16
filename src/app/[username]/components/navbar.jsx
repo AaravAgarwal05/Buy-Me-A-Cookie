@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import DropDown from "@/src/components/dropDown";
+import DropDown from "@/src/components/dropdown";
 import Link from "next/link";
 import Image from "next/image";
 
