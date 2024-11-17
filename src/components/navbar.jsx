@@ -2,7 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import DropDown from "./dropdown";
+import DropDownMenu from "./dropdownMenu";
 import Image from "next/image";
 
 const Navbar = () => {
@@ -44,7 +44,7 @@ const Navbar = () => {
           </li>
         </ul>
       ) : (
-        <DropDown />
+        <DropDownMenu />
       )}
     </nav>
   );

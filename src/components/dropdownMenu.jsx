@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 
-const DropDown = () => {
+const DropDownMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
   if (session) {
@@ -79,4 +79,4 @@ const DropDown = () => {
   }
 };
 
-export default DropDown;
+export default DropDownMenu;
