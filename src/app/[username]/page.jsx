@@ -6,12 +6,13 @@ import { notFound } from "next/navigation";
 
 const Homepage = async ({ params }) => {
   await connectDB();
-
-  const user = await User.findOne({ username: params.username });
+  const { username } = await params;
+  const user = await User.findOne({ username: username });
+  console.log("user found ");
   if (!user) {
     notFound();
   }
-  return <PaymentPage username={params.username} />;
+  return <PaymentPage username={username} />;
 };
 
 export default Homepage;

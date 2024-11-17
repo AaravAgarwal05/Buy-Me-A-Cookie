@@ -15,6 +15,10 @@ const paymentSchema = new Schema(
       required: true,
       index: true,
     },
+    paymentStatus: {
+      type: Boolean,
+      default: false,
+    },
     message: {
       type: String,
     },
