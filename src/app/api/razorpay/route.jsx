@@ -4,58 +4,55 @@ import Payment from "@/src/models/payment";
 import connectDB from "@/src/db/connectDB";
 import User from "@/src/models/user";
 
-export const POST = async (req) => {
-  await connectDB();
-
+export const POST = async (request) => {
   try {
-    let body = await req.formData();
-    body = Object.fromEntries(body);
+    await connectDB();
+    const body = await request.formData();
+    const reqBody = Object.fromEntries(body.entries());
 
     const payment = await Payment.findOne({
-      paymentId: body.razorpay_order_id,
+      paymentId: reqBody.razorpay_order_id,
     });
+
     if (!payment) {
-      console.log("Payment not found for ID:", body.razorpay_payment_id);
-      return NextResponse.json({ error: "Payment not found" }, { status: 404 });
+      return NextResponse.json({
+        status: 400,
+        message: `Payment not found for order id: ${reqBody.razorpay_order_id}`,
+      });
     }
 
-    let user = await User.findOne({ username: payment.userId });
-    const razorpay_secret = user.razorpay_secret;
+    const user = await User.findOne({ username: payment.userId });
+    const razorpay_secret = user.razorPay_secret;
 
     const isValid = validatePaymentVerification(
       {
-        payment_id: body.razorpay_payment_id,
-        order_id: body.razorpay_order_id,
+        payment_id: reqBody.razorpay_payment_id,
+        order_id: reqBody.razorpay_order_id,
       },
-      body.razorpay_signature,
+      reqBody.razorpay_signature,
       razorpay_secret
     );
 
     if (isValid) {
-      const updatedPayment = await Payment.findOneAndUpdate(
-        { paymentId: body.razorpay_order_id },
-        { paymentStatus: true },
-        { new: true }
+      await Payment.findOneAndUpdate(
+        { paymentId: reqBody.razorpay_order_id },
+        { paymentStatus: true }
       );
-      console.log("Payment verified and updated:", updatedPayment);
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_URL}/${updatedPayment.userId}?payment=true`
+        `${process.env.NEXT_PUBLIC_URL}/${payment.userId}?paymentStatus=success`,
+        303
       );
     } else {
-      console.log(
-        "Payment verification failed for ID:",
-        body.razorpay_payment_id
-      );
-      return NextResponse.json(
-        { error: "Payment verification failed" },
-        { status: 400 }
-      );
+      return NextResponse.json({
+        status: 400,
+        message: `Payment verification failed for order id: ${reqBody.razorpay_order_id} 😥`,
+      });
     }
   } catch (error) {
     console.error("Error during payment processing:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      status: 500,
+      error: "Internal Server Error",
+    });
   }
 };

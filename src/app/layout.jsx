@@ -1,10 +1,8 @@
-import { Inter } from "next/font/google";
 import "./globals.css";
-import Footer from "../components/footer";
-import SessionWrapper from "../components/sessionWrapper";
+import Footer from "../components/footer/footer";
+import SessionWrapper from "../components/sessionWrapper/sessionWrapper";
 import Head from "next/head";
-
-const inter = Inter({ subsets: ["latin"] });
+import Notification from "../components/notification/notification";
 
 export const metadata = {
   title: "Buy Me A Cookie - Support Your Favorite Creators!",
@@ -50,10 +48,14 @@ export default function RootLayout({ children }) {
         <link rel="manifest" href="/site.webmanifest" />
       </Head>
       <body
-        className={`${inter.className} text-white top-0 z-[-2] min-h-screen min-w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] flex flex-col`}
+        className={`text-white top-0 z-[-2] min-h-screen min-w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] flex flex-col`}
+        cz-shortcut-listen="true"
       >
         <SessionWrapper>
-          <div className="flex-[1]">{children}</div>
+          <div className="flex-[1]">
+            <Notification />
+            {children}
+          </div>
           <Footer />
         </SessionWrapper>
       </body>

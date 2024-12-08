@@ -1,18 +1,24 @@
 import React from "react";
-import PaymentPage from "@/src/components/paymentPage";
-import connectDB from "@/src/db/connectDB";
-import User from "@/src/models/user";
+import PaymentPage from "@/src/components/paymentPage/paymentPage";
 import { notFound } from "next/navigation";
+import axios from "axios";
 
 const Homepage = async ({ params }) => {
-  await connectDB();
   const { username } = await params;
-  const user = await User.findOne({ username: username });
-  console.log("user found ");
-  if (!user) {
+
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/api/users/fetchUser`,
+      { username }
+    );
+    if (res.data.status !== 200) {
+      notFound();
+    }
+    return <PaymentPage username={username} />;
+  } catch (error) {
+    console.error("Error fetching user:", error);
     notFound();
   }
-  return <PaymentPage username={username} />;
 };
 
 export default Homepage;

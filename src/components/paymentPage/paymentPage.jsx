@@ -1,34 +1,25 @@
 "use client";
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Script from "next/script";
-import Navbar from "../app/[username]/components/navbar";
-import {
-  fetchPayments,
-  fetchUser,
-  initiate,
-  uploadCoverPic,
-  uploadProfilePic,
-} from "@/src/server/serverActions";
+import Navbar from "@/src/components/navbar/navbar";
 import { useSession } from "next-auth/react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { Bounce } from "react-toastify";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Loader from "./loader";
+import Loader from "../loader/loader";
+import axios from "axios";
+import showToast from "../showToast/showToast";
 
 const PaymentPage = ({ username }) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const [loading, setLoading] = React.useState(true);
-  const [paymentForm, setPaymentForm] = React.useState({});
-  const [currentUser, setCurrentUser] = React.useState({});
-  const [payments, setPayments] = React.useState([]);
-  const [coverImage, setCoverImage] = React.useState("");
-  const [profileImage, setProfileImage] = React.useState("");
-  const SearchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const [paymentForm, setPaymentForm] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
+  const [payments, setPayments] = useState([]);
+  const [coverImage, setCoverImage] = useState({});
+  const [profileImage, setProfileImage] = useState({});
+  const [isCoverImageChanged, setIsCoverImageChanged] = useState(false);
+  const [isProfileImageChanged, setIsProfileImageChanged] = useState(false);
 
   const handleChange = (e) => {
     setPaymentForm({ ...paymentForm, [e.target.name]: e.target.value });
@@ -38,126 +29,145 @@ const PaymentPage = ({ username }) => {
     setPaymentForm({ ...paymentForm, amount: amount });
   };
 
-  const getData = async () => {
+  const fetchUserData = async () => {
     try {
-      let u = await fetchUser(username);
-      setCurrentUser(u);
-      let p = await fetchPayments(username);
-      setPayments(p);
+      const res = await axios.post("/api/users/fetchUser", {
+        username: username,
+      });
+      if (res.status === 200) {
+        setCurrentUser(res.data.user);
+        const resPayments = await axios.post("/api/users/fetchPayments", {
+          username: username,
+        });
+        if (resPayments.status === 200) {
+          setPayments(resPayments.data.payments);
+        }
+      }
     } catch (error) {
       console.error("Error fetching user data:", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
-    if (SearchParams.get("payment") === "true") {
-      toast.success("Payment Successful", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
+    fetchUserData();
+    const urlParams = new URLSearchParams(window.location.search);
+    const response = urlParams.get("paymentStatus");
+    if (response === "success") {
+      showToast("Payment Successful 🥳", "success");
+      setTimeout(() => {
+        router.push(`/${username}`);
+      }, 5000);
     }
+  }, [router, username]);
 
-    setTimeout(router.push(`/${username}`), 2000);
-  }, []);
-
-  const reloadPage = () => {
-    window.location.reload();
+  const getSignedUrl = async (fileName) => {
+    const res = await axios.post("/api/users/getSignedURL", {
+      fileName: fileName,
+    });
+    return res.data.url;
   };
 
-  const handleCoverPicUpload = async (e) => {
-    var reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onload = function () {
-      setCoverImage(reader.result);
-      uploadCoverPic(currentUser._id, reader.result);
-      toast.success("Cover Image uploaded Successfully", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
-    };
-    reader.onerror = function (error) {
-      console.log("Error: ", error);
-      toast.error("Error uploading Cover Image", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
-      });
-    };
-    setTimeout(reloadPage, 2000);
+  const handleCoverPicChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setCoverImage({ url: url, file: file });
+      setIsCoverImageChanged(true);
+    }
   };
 
-  const handleProfilePicUpload = async (e) => {
-    var reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onload = function () {
-      setProfileImage(reader.result);
-      uploadProfilePic(currentUser._id, reader.result);
-      toast.success("Profile Image uploaded Successfully", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
+  const handleProfilePicChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setProfileImage({ url: url, file: file });
+      setIsProfileImageChanged(true);
+    }
+  };
+
+  const handleCoverPicUpload = async () => {
+    try {
+      const sanitizedFileName = coverImage.file.name
+        .split(".")[0]
+        .replace(/\s+/g, "_");
+      const timestamp = Date.now();
+      const objectKey = `${sanitizedFileName}_${timestamp}`;
+      const url = await getSignedUrl(objectKey);
+      const res = await axios.put(url, coverImage.file, {
+        headers: {
+          "Content-Type": coverImage.file.type,
+        },
       });
-    };
-    reader.onerror = function (error) {
-      console.log("Error: ", error);
-      toast.error("Error uploading Profile Image", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
+      if (res.status === 200) {
+        setCurrentUser({
+          ...currentUser,
+          coverPic: `${process.env.NEXT_PUBLIC_AWS_IMAGE_URL}/${objectKey}`,
+        });
+        await axios.post("/api/users/updateUserData", {
+          username: currentUser.username,
+          data: {
+            coverPic: `${process.env.NEXT_PUBLIC_AWS_IMAGE_URL}/${objectKey}`,
+          },
+        });
+        showToast("Cover Image Uploaded Successfully 🥳", "success");
+      }
+    } catch (error) {
+      console.error("Error uploading cover image:", error);
+      showToast("Cover Image Upload Failed 😥", "error");
+    }
+  };
+
+  const handleProfilePicUpload = async () => {
+    try {
+      const sanitizedFileName = profileImage.file.name
+        .split(".")[0]
+        .replace(/\s+/g, "_");
+      const timestamp = Date.now();
+      const objectKey = `${sanitizedFileName}_${timestamp}`;
+      const url = await getSignedUrl(objectKey);
+      const res = await axios.put(url, profileImage.file, {
+        headers: {
+          "Content-Type": profileImage.file.type,
+        },
       });
-    };
-    setTimeout(reloadPage, 2000);
+      if (res.status === 200) {
+        setCurrentUser({
+          ...currentUser,
+          profilePic: `${process.env.NEXT_PUBLIC_AWS_IMAGE_URL}/${objectKey}`,
+        });
+        await axios.post("/api/users/updateUserData", {
+          username: currentUser.username,
+          data: {
+            profilePic: `${process.env.NEXT_PUBLIC_AWS_IMAGE_URL}/${objectKey}`,
+          },
+        });
+        showToast("Profile Image Uploaded Successfully 🥳", "success");
+      }
+    } catch (error) {
+      console.error("Error uploading profile image:", error);
+      showToast("Profile Image Upload Failed 😥", "error");
+    }
   };
 
   const pay = async (amount) => {
-    const response = await initiate(amount, username, paymentForm);
-    const orderId = response.id;
+    const res = await axios.post("/api/users/initiatePayment", {
+      amount: amount,
+      username: username,
+      paymentForm: paymentForm,
+    });
+
+    console.log(res.data);
+
+    const orderId = res.data.order.id;
 
     const options = {
       key: currentUser.razorpay_id,
       amount: amount * 100,
       currency: "INR",
       name: "Buy me a Cookie",
-      description: "Test Transaction",
-      image: "./Cookie.png",
+      description: "Donation",
       order_id: orderId,
       callback_url: "/api/razorpay",
       prefill: {
@@ -172,46 +182,58 @@ const PaymentPage = ({ username }) => {
         color: "#3399cc",
       },
     };
-    const rzp1 = new Razorpay(options);
-    rzp1.open();
+    const rzp = new Razorpay(options);
+    rzp.open();
   };
 
-  if (loading) {
+  if (isLoading) {
     return <Loader />;
   } else {
     return (
       <>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
         <Script src="https://checkout.razorpay.com/v1/checkout.js"></Script>
         <Navbar />
         <div className="relative w-full">
           <Image
             className="object-cover w-full h-48 md:h-72 lg:h-96"
-            src={currentUser.coverPic || coverImage || "/Cover Image.jpeg"}
+            src={currentUser.coverPic || coverImage.url || "/Cover Image.jpeg"}
             alt="Cover Image"
             width={1920}
             height={1080}
           />
-          {session && (
+          {session && !isCoverImageChanged && (
             <div className="absolute inset-0 flex items-center justify-center w-full gap-2 text-3xl font-bold text-white transition-opacity duration-300 bg-black opacity-0 cursor-pointer bg-opacity-60 hover:opacity-100">
               <Image width={40} height={40} src="/Edit.gif" alt="" />
               Upload
               <input
                 type="file"
                 className="absolute inset-0 opacity-0 cursor-pointer"
-                onChange={handleCoverPicUpload}
+                onChange={(e) => {
+                  handleCoverPicChange(e);
+                }}
               />
+            </div>
+          )}
+          {session && isCoverImageChanged && (
+            <div className="absolute inset-0 flex items-center justify-center w-full gap-5 text-3xl font-bold text-white bg-black bg-opacity-60">
+              <button
+                className="p-2 px-4 text-white rounded-lg bg-slate-800"
+                onClick={() => {
+                  setIsCoverImageChanged(false);
+                  setCoverImage("");
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="p-2 px-4 text-white rounded-lg bg-slate-800"
+                onClick={() => {
+                  setIsCoverImageChanged(false);
+                  handleCoverPicUpload();
+                }}
+              >
+                Save
+              </button>
             </div>
           )}
 
@@ -221,18 +243,45 @@ const PaymentPage = ({ username }) => {
                 className="rounded-full aspect-square"
                 height={150}
                 width={150}
-                src={currentUser.profilePic || profileImage || "/Avatar2.gif"}
+                src={
+                  currentUser.profilePic || profileImage.url || "/Avatar2.gif"
+                }
                 alt="Profile"
               />
-              {session && (
+              {session && !isProfileImageChanged && (
                 <div className="absolute inset-0 flex items-center justify-center gap-1 text-sm font-bold text-white transition-opacity duration-300 bg-black rounded-full opacity-0 cursor-pointer bg-opacity-60 group-hover:opacity-100">
                   <Image width={20} height={20} src="/Edit.gif" alt="" />
                   Upload
                   <input
                     type="file"
                     className="absolute inset-0 opacity-0 cursor-pointer"
-                    onChange={handleProfilePicUpload}
+                    onChange={(e) => {
+                      handleProfilePicChange(e);
+                    }}
                   />
+                </div>
+              )}
+
+              {session && isProfileImageChanged && (
+                <div className="absolute inset-0 flex items-center justify-center gap-5 text-sm font-bold text-white bg-black rounded-full bg-opacity-60">
+                  <button
+                    className="p-2 px-4 text-white rounded-lg bg-slate-800"
+                    onClick={() => {
+                      setIsProfileImageChanged(false);
+                      setProfileImage("");
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="p-2 px-4 text-white rounded-lg bg-slate-800"
+                    onClick={() => {
+                      setIsProfileImageChanged(false);
+                      handleProfilePicUpload();
+                    }}
+                  >
+                    Save
+                  </button>
                 </div>
               )}
             </div>
@@ -265,7 +314,8 @@ const PaymentPage = ({ username }) => {
                     <span>
                       {p.name} donated{" "}
                       <span className="font-bold">₹{p.amount}</span> with a
-                      message &quot;{p.message}&quot;
+                      message &quot;<span className="font-bold">{p.message}</span>  
+                      &quot;
                     </span>
                   </li>
                 ))}

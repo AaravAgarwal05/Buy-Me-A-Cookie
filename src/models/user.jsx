@@ -2,36 +2,38 @@ import mongoose, { Schema, model } from "mongoose";
 
 const userSchema = new Schema(
   {
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-    },
-    contact: {
-      type: String,
-      default: "",
-      trim: true,
-    },
     name: {
       type: String,
       required: true,
-      trim: true,
     },
     username: {
       type: String,
       required: true,
       unique: true,
     },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    contact: {
+      type: String,
+      default: "",
+    },
     about: {
       type: String,
       default: "Welcome to Buy Me a Cookie",
     },
-    razorpay_id: {
+    razorPay_id: {
       type: String,
       default: "",
     },
-    razorpay_secret: {
+    razorPay_secret: {
       type: String,
       default: "",
     },

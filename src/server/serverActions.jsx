@@ -1,144 +1,163 @@
 "use server";
-
 import Razorpay from "razorpay";
 import Payment from "../models/payment";
 import connectDB from "../db/connectDB";
 import User from "../models/user";
+import s3Bucket from "../aws/s3Bucket";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-export const initiate = async (amount, userId, paymentForm) => {
+export const initiatePayment = async (amount, username, paymentForm) => {
   try {
     await connectDB();
 
-    let user = await User.findOne({ username: userId });
-    const razorpay_id = user.razorpay_id;
-    const razorpay_secret = user.razorpay_secret;
+    const user = await User.findOne({ username: username });
+    const razorPay_id = user.razorPay_id;
+    const razorPay_secret = user.razorPay_secret;
 
     const instance = new Razorpay({
-      key_id: razorpay_id,
-      key_secret: razorpay_secret,
+      key_id: razorPay_id,
+      key_secret: razorPay_secret,
     });
 
-    let options = {
+    const options = {
       amount: parseInt(amount, 10) * 100,
       currency: "INR",
       receipt: `order_rcptid_${Date.now()}`,
       notes: {
-        key1: "value1",
-        key2: "value2",
+        description: paymentForm.message,
       },
     };
 
     const order = await instance.orders.create(options);
 
-    await Payment.create({
+    const payment = new Payment({
       paymentId: order.id,
-      userId: userId,
+      userId: username,
       amount: amount,
       message: paymentForm.message,
       name: paymentForm.name,
     });
-
-    return order;
-  } catch (error) {
-    console.error("Error initiating payment:", error);
-    throw new Error("Payment initiation failed" + error);
+    await payment.save();
+    return {
+      status: 200,
+      message: "Payment initiated successfully 🥳",
+      order: order,
+    };
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error("Failed to initiate payment:", err.message);
+    } else {
+      console.error("Failed to initiate payment: An unknown error occurred");
+    }
+    throw err;
   }
 };
 
-export const fetchUser = async (userId) => {
-  await connectDB();
-  let user = await User.findOne({ username: userId });
-  user = user.toObject({ flattenObjectsIds: true });
-  return user;
-};
-
-export const fetchPayments = async (userId) => {
-  await connectDB();
-  const payments = await Payment.find({
-    userId: userId,
-    paymentStatus: "true",
-  })
-    .sort({ amount: -1 })
-    .lean();
-  return payments;
-};
-
-export const updateUser = async (userId, data) => {
-  await connectDB();
-
-  if (typeof data !== "object" || data === null) {
-    return { error: "Invalid data format" };
-  }
-
-  let newData = {
-    name: data.name,
-    email: data.email,
-    about: data.about,
-    username: data.username,
-    contact: data.contact,
-    razorpay_id: data.razorpay_id,
-    razorpay_secret: data.razorpay_secret,
-  };
-
+export const fetchUser = async (username) => {
   try {
-    if (userId !== newData.username) {
-      let existingUser = await User.findOne({ username: newData.username });
+    await connectDB();
+    const user = await User.findOne({ username: username });
+    if (!user) {
+      return {
+        status: 400,
+        message: "User not found 😥",
+      };
+    }
+    return {
+      status: 200,
+      message: "User found Successfully 🥳",
+      user: user,
+    };
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return {
+      status: 500,
+      message: "User fetching failed 😥",
+    };
+  }
+};
+
+export const fetchPayments = async (username) => {
+  try {
+    await connectDB();
+    const payments = await Payment.find({ userId: username });
+    if (!payments) {
+      return {
+        status: 400,
+        message: "Payments not found 😥",
+      };
+    }
+    return {
+      status: 200,
+      message: "Payments fetched successfully 🥳",
+      payments: payments,
+    };
+  } catch (error) {
+    console.error("Error fetching payments:", error);
+    return {
+      status: 500,
+      message: "Payments fetching failed 😥",
+    };
+  }
+};
+
+export const updateUserData = async (username, data) => {
+  try {
+    await connectDB();
+    if (data.username !== username) {
+      const existingUser = await User.findOne({ username: data.username });
       if (existingUser) {
-        throw new Error("Username already exists");
+        return {
+          status: 400,
+          message: "Username already exists 😥",
+        };
       }
     }
-
-    await User.updateOne({ username: userId }, { $set: newData });
-    await Payment.updateMany({ userId: userId }, { userId: newData.username });
-  } catch (error) {
-    throw new Error(error);
-  }
-};
-
-export const uploadCoverPic = async (userId, data) => {
-  await connectDB();
-
-  if (typeof data !== "string" || !data.startsWith("data:image/")) {
-    return { error: "Invalid data format" };
-  }
-
-  try {
-    let result = await User.updateOne(
-      { _id: userId },
-      { $set: { coverPic: data } }
+    await User.findOneAndUpdate({ username: username }, { $set: data });
+    await Payment.updateMany(
+      { userId: username },
+      { $set: { userId: data.username } }
     );
-
-    if (result.modifiedCount === 0) {
-      return { error: "Cover picture upload failed" };
-    }
-
-    return { success: true };
+    return {
+      status: 200,
+      message: "User updated successfully 🥳",
+    };
   } catch (error) {
     console.error("Error updating user:", error);
-    return { error: "Cover picture upload failed due to an error" };
+    return {
+      status: 500,
+      message: "User update failed 😥",
+    };
   }
 };
 
-export const uploadProfilePic = async (userId, data) => {
-  await connectDB();
-
-  if (typeof data !== "string" || !data.startsWith("data:image/")) {
-    return { error: "Invalid data format" };
+export const createSignedURL = async (fileName) => {
+  if (!fileName || typeof fileName !== "string") {
+    return {
+      status: 400,
+      message: "Invalid file name 😥",
+    };
   }
-
   try {
-    let result = await User.updateOne(
-      { _id: userId },
-      { $set: { profilePic: data } }
-    );
-
-    if (result.modifiedCount === 0) {
-      return { error: "Profile picture upload failed" };
-    }
-
-    return { success: true };
+    const putObjectCommand = new PutObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: fileName,
+    });
+    const signedURL = await getSignedUrl(s3Bucket, putObjectCommand, {
+      expiresIn: 60,
+    });
+    return {
+      status: 200,
+      message: "URL generated successfully 🥳",
+      url: signedURL,
+    };
   } catch (error) {
-    console.error("Error updating user:", error);
-    return { error: "Profile picture upload failed due to an error" };
+    console.error("Error generating signed URL:", error);
+    return {
+      status: 500,
+      message: "URL generation failed 😥",
+    };
   }
 };
+
