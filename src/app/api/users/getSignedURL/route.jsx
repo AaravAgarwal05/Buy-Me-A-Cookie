@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createSignedURL } from "@/src/server/serverActions";
+import { createSignedURL } from "@/server/serverActions";
 
 export async function POST(request) {
   try {

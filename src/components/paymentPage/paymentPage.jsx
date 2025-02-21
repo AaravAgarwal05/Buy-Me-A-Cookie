@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Script from "next/script";
-import Navbar from "@/src/components/navbar/navbar";
+import Navbar from "@/components/navbar/navbar";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";

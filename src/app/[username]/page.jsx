@@ -1,5 +1,5 @@
 import React from "react";
-import PaymentPage from "@/src/components/paymentPage/paymentPage";
+import PaymentPage from "@/components/paymentPage/paymentPage";
 import { notFound } from "next/navigation";
 import axios from "axios";
 

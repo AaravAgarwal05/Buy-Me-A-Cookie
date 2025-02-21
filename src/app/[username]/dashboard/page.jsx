@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/navbar";
-import Loader from "@/src/components/loader/loader";
+import Loader from "@/components/loader/loader";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import showToast from "@/src/components/showToast/showToast";
+import showToast from "@/components/showToast/showToast";
 import {usePathname, useRouter } from "next/navigation";
 
 const Dashboard = () => {

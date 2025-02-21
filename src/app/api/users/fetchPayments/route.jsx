@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { fetchPayments } from "@/src/server/serverActions";
+import { fetchPayments } from "@/server/serverActions";
 
 export async function POST(request) {
   try {
